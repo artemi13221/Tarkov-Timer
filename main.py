@@ -75,46 +75,46 @@ def funMain(inputNum):
         printMain()
         inputNum = getInputNumber()
     elif(inputNum == 0):
-        return 0;
+        return 0
     elif(inputNum == 1):
         printHideout()
         hideoutTmp = getInputNumber()
         if(hideoutTmp == 0):
-            inputNum = -1;
+            inputNum = -1
         else:
             funHideout(hideoutTmp)
     elif(inputNum == 2):
         printTraders()
         traderTmp = getInputNumber()
         if(traderTmp == 0):
-            inputNum = -1;
+            inputNum = -1
         else:
             funTrader(traderTmp)
     elif(inputNum == 3):
         printOption()
         optionTmp = getInputNumber()
         if(optionTmp == 0):
-            optionTmp = -1;
+            optionTmp = -1
         else:
             funOption(optionTmp)
     elif(inputNum == 4):
         print("Github 주소")
-        inputnum = -1;
+        inputnum = -1
     else:
         print("Error! - Please input the correct number.")
-        return -1;
+        return -1
     
     return inputNum
 
 def funTrader(inputNum):
     print("아직 미구현 기능입니다. 다음에 이용해주세요. 감사합니다. \n")
-    return 0;
+    return 0
 
 def funOption(inputNum):
     global isAlarm
     
     if(inputNum == 0):
-        return 0;
+        return 0
         
     elif(inputNum == 1):
         isAlarm = not isAlarm
