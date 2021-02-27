@@ -1,0 +1,55 @@
+{
+    "WorkBench" : 
+        {
+            "SP-6" : 270,
+            "7N9 SPP" : 297,
+            "7N12 BP" : 320,
+            "Gunpowder-Eagle" : 98,
+            "Gunpowder-Hawk" : 36
+        },
+
+    "MedStation" :
+        {
+            "pile of meds" : 48,
+            "SJ6 TGLabs" : 85
+        },
+
+    "Lavatory" :
+        {
+            "Cordura" : 48,
+            "Aramid" : 33,
+            "Ripstop" : 37
+        },
+
+    "ScavCase" :
+        {
+            "1000" : 41,
+            "7000" : 128,
+            "85000" : 135,
+            "Moonshine" : 280,
+            "Intelligence" : 320
+        },
+
+    "BoozeGenerator" :
+        {
+            "Moonshine" : 93
+        },
+
+    "Water Collector" :
+        {
+            "Purified water" : 325
+        },
+
+    "NutritionUnit" :
+        {
+            "Aquamari" : 111
+        },
+
+    "IntelligenceCenter" :
+        {
+            "VPX" : 2750,
+            "Graphics card" : 4150,
+            "UHF RFID" : 3200,
+            "Intelligence" : 1900
+        }
+}
