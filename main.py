@@ -7,6 +7,7 @@ hideoutTmp = -1
 traderTmp = -1
 optionTmp = -1
 skillLevel = 0
+
 maker = []
 
 def saveJsonTime():
