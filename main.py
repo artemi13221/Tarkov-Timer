@@ -1,5 +1,6 @@
 import json
 import datetime
+import os
 
 isAlarm = True
 mainTmp = -1
@@ -18,6 +19,18 @@ def saveJsonTime():
 def initStartProgram(): 
     for _ in range(9):
         maker.append(datetime.datetime.today())
+    if(os.path.exists('time.json')) :
+        f = open('time.json', 'r')
+        temp = json.load(f)
+
+        if(temp == '') :
+            pass
+        else :
+            pass
+    
+    else :
+        pass
+    
     
 def printMain():
     print("Welcome to Tarkov Timer. Select number \n\
