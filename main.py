@@ -16,8 +16,8 @@ def saveJsonTime():
     f.close()
 
 def initStartProgram(): 
-    for i in range(9):
-        maker.append(datetime.datetime(2020, 1, 1, 1, 1, 1))
+    for _ in range(9):
+        maker.append(datetime.datetime.today())
     
 def printMain():
     print("Welcome to Tarkov Timer. Select number \n\
@@ -143,7 +143,7 @@ def funHideout(inputNum):
     f.close()
 
     makingKeys = list(temp.keys())
-    makingValues = list(temp[makingKeys[inputNum-1]].keys())
+    makingValues = list(temp[makingKeys[inputNum - 1]].keys())
 
     print('Select a item.')
     j = 1
@@ -153,7 +153,9 @@ def funHideout(inputNum):
     
     inputSecondNum = getInputNumber()
 
-    CraftingTime = temp[makingKeys[inputNum-1]][makingValues[inputSecondNum-1]]
+    craftingTime = temp[makingKeys[inputNum - 1]][makingValues[inputSecondNum - 1]]
+
+    maker[inputNum] = datetime.datetime.now() + datetime.timedelta(minutes=craftingTime)
     
 ###
 # Main #
