@@ -19,6 +19,7 @@ def saveJsonTime():
 def initStartProgram(): 
     for _ in range(9):
         maker.append(datetime.datetime.today())
+    
     if(os.path.exists('time.json')) :
         f = open('time.json', 'r')
         temp = json.load(f)
@@ -26,10 +27,12 @@ def initStartProgram():
         if(temp == '') :
             pass
         else :
-            pass
-    
+            maker = temp
+
+        f.close()
     else :
-        pass
+        f = open('time.json', 'w')
+        f.close()
     
     
 def printMain():
@@ -169,6 +172,8 @@ def funHideout(inputNum):
     craftingTime = temp[makingKeys[inputNum - 1]][makingValues[inputSecondNum - 1]]
 
     maker[inputNum] = datetime.datetime.now() + datetime.timedelta(minutes=craftingTime)
+
+    saveJsonTime()
     
 ###
 # Main #
