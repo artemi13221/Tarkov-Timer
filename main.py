@@ -20,7 +20,7 @@ def initStartProgram():
     for _ in range(9):
         maker.append(datetime.datetime.today())
     
-    if(os.path.exists('time.json')) :
+    if(os.path.exists('time.json')):
         f = open('time.json', 'r')
         temp = json.load(f)
 
@@ -30,7 +30,7 @@ def initStartProgram():
             maker = temp
 
         f.close()
-    else :
+    else:
         f = open('time.json', 'w')
         f.close()
     
