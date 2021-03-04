@@ -1,6 +1,8 @@
 import json
 import datetime
 import os
+import threading
+import time
 
 isAlarm = True
 mainTmp = -1
@@ -10,30 +12,52 @@ optionTmp = -1
 skillLevel = 0
 
 maker = []
+tmp = datetime.datetime.now()
+
+def getNowTime():
+    now_time = datetime.datetime.now()
+    
+    return now_time
+
+def toastAlarm():
+    pass
 
 def saveJsonTime():
     f = open('time.json', 'w')
-    json.dump(maker, f)
+    json_data = []
+    for i in maker:
+        json_data.append(i.strftime('%Y-%m-%d-%H-%M-%S'))
+    
+    json.dump(json_data, f)
     f.close()
 
-def initStartProgram(): 
-    for _ in range(9):
-        maker.append(datetime.datetime.today())
-    
+def openJsonTime():
     if(os.path.exists('time.json')):
         f = open('time.json', 'r')
-        temp = json.load(f)
+        data_tmp = f.read()
 
-        if(temp == '') :
+        if(data_tmp == ''):
             pass
-        else :
-            maker = temp
+        else:
+            json_data = json.loads(data_tmp)
+            j = 0
+            for i in json_data:
+                maker_tmp = list(map(int,i.split('-')))
+                maker[j] = datetime.datetime(maker_tmp[0], maker_tmp[1], maker_tmp[2], maker_tmp[3], maker_tmp[4], maker_tmp[5])
+                j = j + 1
 
         f.close()
     else:
         f = open('time.json', 'w')
         f.close()
+
+def initStartProgram(): 
+    global maker
+
+    for _ in range(9):
+        maker.append(getNowTime())
     
+    openJsonTime()
     
 def printMain():
     print("Welcome to Tarkov Timer. Select number \n\
@@ -154,6 +178,8 @@ def funOption(inputNum):
         return 1
 
 def funHideout(inputNum):
+    global maker
+
     f = open('data.json', 'r')
     temp = json.load(f)
     f.close()
@@ -171,7 +197,7 @@ def funHideout(inputNum):
 
     craftingTime = temp[makingKeys[inputNum - 1]][makingValues[inputSecondNum - 1]]
 
-    maker[inputNum] = datetime.datetime.now() + datetime.timedelta(minutes=craftingTime)
+    maker[inputNum] = getNowTime() + datetime.timedelta(minutes=craftingTime)
 
     saveJsonTime()
     
