@@ -5,7 +5,7 @@ import threading
 import time
 #from win10toast import ToastNotifier
 
-Hideout = ["tmp", "WorkBench", "MedStation", "Lavatory", "Scav Case", "Booze Generator", "Water Collector", "Nutrition Unit", "Intelligence Center"]
+hideout = ["tmp", "WorkBench", "MedStation", "Lavatory", "Scav Case", "Booze Generator", "Water Collector", "Nutrition Unit", "Intelligence Center"]
 
 isAlarm = True
 mainTmp = -1
@@ -34,7 +34,7 @@ def toastAlarm():
                 #toaster = ToastNotifier()
                 #toaster.show_toast(f'{Hideout[i]} is done!!', duration=10)
 
-                print(f'{Hideout[i]} is done!!')
+                print(f'{hideout[i]} is done!!')
 
         time.sleep(5)
 
@@ -51,19 +51,17 @@ def saveJsonData():
     json.dump(json_data, f)
     f.close()
 
-def openUserData():
+def loadUserData():
     if(os.path.exists('save.json')):
         f = open('save.json', 'r')
         data_tmp = f.read()
 
-        if(data_tmp == ''):
-            pass
-        else:
+        if(data_tmp != ''):
             json_data = json.loads(data_tmp)
 
             skillLevel = json_data['level']
             openJsonTime(json_data['time'])
-
+            
         f.close()
     else:
         f = open('save.json', 'w')
@@ -82,14 +80,14 @@ def initStartProgram():
     for _ in range(9):
         maker.append(datetime.datetime(2099, 12, 31, 0, 0, 0))
     
-    openUserData()
+    loadUserData()
     t = threading.Thread(target=toastAlarm)
     t.start()
 
 def skillTimeSet(time):
-    decreseTimePersent = skillLevel * 0.75
+    decresedTimePersent = skillLevel * 0.75
 
-    return time - (time * (decreseTimePersent / 100.0))
+    return time - (time * (decresedTimePersent / 100.0))
 
 def printMain():
     print("Welcome to Tarkov Timer. Select number \n\
