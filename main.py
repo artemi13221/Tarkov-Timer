@@ -60,14 +60,16 @@ def loadUserData():
             json_data = json.loads(data_tmp)
 
             skillLevel = json_data['level']
-            openJsonTime(json_data['time'])
+            loadJsonData(json_data['time'])
             
         f.close()
     else:
         f = open('save.json', 'w')
         f.close()
 
-def openJsonTime(data_tmp):
+def loadJsonData(data_tmp):
+    global maker
+
     j = 0
     for i in data_tmp:
         maker_tmp = list(map(int,i.split('-')))
