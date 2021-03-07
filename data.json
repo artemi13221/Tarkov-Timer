@@ -15,7 +15,8 @@
     "Lavatory": {
         "Cordura": 48,
         "Aramid": 33,
-        "Ripstop": 37
+        "Ripstop": 37,
+        "bandage": 29
     },
 
     "ScavCase": {

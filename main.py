@@ -1,40 +1,96 @@
 import json
 import datetime
 import os
+import threading
+import time
+#from win10toast import ToastNotifier
+
+hideout = ["tmp", "WorkBench", "MedStation", "Lavatory", "Scav Case", "Booze Generator", "Water Collector", "Nutrition Unit", "Intelligence Center"]
 
 isAlarm = True
 mainTmp = -1
 hideoutTmp = -1
 traderTmp = -1
 optionTmp = -1
-skillLevel = 0
+skillLevel = 1
+
 
 maker = []
+userDataSave = []
+userDataSave.append(maker)
+userDataSave.append(skillLevel)
 
-def saveJsonTime():
-    f = open('time.json', 'w')
-    json.dump(maker, f)
+def getNowTime():
+    now_time = datetime.datetime.now()
+    
+    return now_time
+
+def toastAlarm():
+    while True:
+        for i in range(len(maker)):
+            if(getNowTime() > maker[i]):
+                maker[i] = datetime.datetime(2099, 12, 31, 0, 0, 0)
+                saveJsonData()
+                #toaster = ToastNotifier()
+                #toaster.show_toast(f'{Hideout[i]} is done!!', duration=10)
+
+                print(f'{hideout[i]} is done!!')
+
+        time.sleep(5)
+
+def saveJsonData():
+    f = open('save.json', 'w')
+    json_data = {}
+    time_tmp = []
+    for i in maker:
+        time_tmp.append(i.strftime('%Y-%m-%d-%H-%M-%S'))
+    
+    json_data['time'] = time_tmp
+    json_data['level'] = skillLevel
+
+    json.dump(json_data, f)
     f.close()
 
-def initStartProgram(): 
-    for _ in range(9):
-        maker.append(datetime.datetime.today())
-    
-    if(os.path.exists('time.json')):
-        f = open('time.json', 'r')
-        temp = json.load(f)
+def loadUserData():
+    if(os.path.exists('save.json')):
+        f = open('save.json', 'r')
+        data_tmp = f.read()
 
-        if(temp == '') :
-            pass
-        else :
-            maker = temp
+        if(data_tmp != ''):
+            json_data = json.loads(data_tmp)
 
+            skillLevel = json_data['level']
+            loadJsonData(json_data['time'])
+            
         f.close()
     else:
-        f = open('time.json', 'w')
+        f = open('save.json', 'w')
         f.close()
+
+def loadJsonData(data_tmp):
+    global maker
+
+    j = 0
+    for i in data_tmp:
+        maker_tmp = list(map(int,i.split('-')))
+        maker[j] = datetime.datetime(maker_tmp[0], maker_tmp[1], maker_tmp[2], maker_tmp[3], maker_tmp[4], maker_tmp[5])
+        j = j + 1
+
+def initStartProgram(): 
+    global maker
+
+    for _ in range(9):
+        maker.append(datetime.datetime(2099, 12, 31, 0, 0, 0))
     
-    
+    loadUserData()
+    t = threading.Thread(target=toastAlarm)
+    t.start()
+
+def skillTimeSet(time):
+    decresedTimePersent = skillLevel * 0.75
+
+    return time - (time * (decresedTimePersent / 100.0))
+
 def printMain():
     print("Welcome to Tarkov Timer. Select number \n\
 ============================================= \n\
@@ -110,7 +166,7 @@ def funMain(inputNum):
         printOption()
         optionTmp = getInputNumber()
         if(optionTmp == 0):
-            optionTmp = -1
+            inputNum = -1
         else:
             funOption(optionTmp)
     elif(inputNum == 4):
@@ -128,6 +184,7 @@ def funTrader(inputNum):
 
 def funOption(inputNum):
     global isAlarm
+    global skillLevel
     
     if(inputNum == 0):
         return 0
@@ -143,17 +200,20 @@ def funOption(inputNum):
         strTmp = input("Input : ")
         if(strTmp.isdigit()):
             skillLevel = int(strTmp)
-            if(skillLevel > 51 or skillLevel < 0):
+            if(skillLevel > 51 or skillLevel < 1):
                 print("Error! - Please input the correct number.")
                 skillLevel = 0
             else: 
                 print("Success!")
+                saveJsonData()
         else:
             print("Error! - Please input the correct number.")
         
         return 1
 
 def funHideout(inputNum):
+    global maker
+
     f = open('data.json', 'r')
     temp = json.load(f)
     f.close()
@@ -171,9 +231,9 @@ def funHideout(inputNum):
 
     craftingTime = temp[makingKeys[inputNum - 1]][makingValues[inputSecondNum - 1]]
 
-    maker[inputNum] = datetime.datetime.now() + datetime.timedelta(minutes=craftingTime)
+    maker[inputNum] = getNowTime() + datetime.timedelta(minutes=skillTimeSet(craftingTime))
 
-    saveJsonTime()
+    saveJsonData()
     
 ###
 # Main #
@@ -183,4 +243,4 @@ initStartProgram()
 while(True):
     mainTmp = funMain(mainTmp)
     if(mainTmp == 0):
-        break
+        os._exit(0)
